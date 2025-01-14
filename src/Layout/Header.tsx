@@ -6,7 +6,10 @@ import { v4 } from "uuid";
 const Header = React.memo((): React.JSX.Element => {
     const { theme } = React.useContext(ThemeContext)
     return (<>
-        <header className='flex justify-start gap-4 items-center h-[10vh] px-8  shadow-md'>
+        <header className={clsx('flex justify-start gap-4 items-center h-[10vh] px-8  shadow-md', {
+            "bg-white": theme.mode == "light",
+            "bg-[var(--dark-gray)] text-white": theme.mode == "dark"
+        })}>
             <div className={clsx('border-solid border-r-[1px] border-[var(--lines)] pr-6 h-full flex items-center', {
                 "hidden": theme.menu,
                 "block": !theme.menu

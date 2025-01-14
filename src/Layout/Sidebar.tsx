@@ -32,7 +32,7 @@ const Sidebar = React.memo((): React.JSX.Element => {
 
             <h2 className='uppercase s text-[var(--medium-gray)] pl-8'>All Boards ({boards.length})</h2>
             <div className='flex flex-col justify-start items-start w-5/6 mt-5'>
-                {boards.map((board: Board, index: number) => <MenuItem key={index} name={index.toString()} text={board.name} />)}
+                {boards.map((board: Board, index: number) => <MenuItem key={index} name={board.name} text={board.name} />)}
             </div>
 
             <div className={clsx('w-5/6 mx-auto py-4 px-16 flex items-center justify-center gap-4 mt-auto', {

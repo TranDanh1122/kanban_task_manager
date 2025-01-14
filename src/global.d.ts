@@ -10,11 +10,12 @@ declare global {
     }
     interface Column {
         name: string,
+        color: string,
         tasks: Task[]
     }
     interface Board {
         name: string,
-        columns: Column
+        columns: Column[]
     }
     interface Theme {
         mode: string,

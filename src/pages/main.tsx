@@ -8,10 +8,12 @@ import { fetchTasks } from '../redux/TaskSlicer'
 import Sidebar from '../Layout/Sidebar'
 import Header from '../Layout/Header'
 import { Board } from '../components/Board'
+import TaskInfo from '../components/TaskInfo'
+import { v4 } from 'uuid'
 export default function Main() {
     const { theme } = React.useContext(ThemeContext)
     const dispatch: AppDispatch = useDispatch()
-    const { loading } = useSelector((state: AppState) => state.task)
+    const { loading, viewTask } = useSelector((state: AppState) => state.task)
     React.useEffect(() => {
         dispatch(fetchTasks())
     }, [])
@@ -25,6 +27,8 @@ export default function Main() {
             })}>
                 <Header />
                 <Board />
+              
+                {viewTask != null && <TaskInfo key={v4()} task={viewTask} />}
             </div>
         </div>
     )
