@@ -10,10 +10,11 @@ import Header from '../Layout/Header'
 import { Board } from '../components/Board'
 import TaskInfo from '../components/TaskInfo'
 import { v4 } from 'uuid'
+import TaskForm from '../components/TaskForm'
 export default function Main() {
     const { theme } = React.useContext(ThemeContext)
     const dispatch: AppDispatch = useDispatch()
-    const { loading, viewTask } = useSelector((state: AppState) => state.task)
+    const { loading, viewTask, editTask, createTask } = useSelector((state: AppState) => state.task)
     React.useEffect(() => {
         dispatch(fetchTasks())
     }, [])
@@ -27,8 +28,8 @@ export default function Main() {
             })}>
                 <Header />
                 <Board />
-              
                 {viewTask != null && <TaskInfo key={v4()} task={viewTask} />}
+                {(editTask != null || createTask) && <TaskForm key={v4()}  />}
             </div>
         </div>
     )

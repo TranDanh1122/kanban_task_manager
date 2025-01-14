@@ -651,20 +651,40 @@ video {
   left: 50%;
 }
 
-.top-\[50\%\] {
-  top: 50%;
-}
-
-.top-\[100\%\] {
-  top: 100%;
+.right-0 {
+  right: 0px;
 }
 
 .top-0 {
   top: 0px;
 }
 
+.top-\[100\%\] {
+  top: 100%;
+}
+
+.top-\[50\%\] {
+  top: 50%;
+}
+
+.right-\[50\%\] {
+  right: 50%;
+}
+
+.right-\[-50\%\] {
+  right: -50%;
+}
+
+.right-\[-25\%\] {
+  right: -25%;
+}
+
 .-z-10 {
   z-index: -10;
+}
+
+.z-10 {
+  z-index: 10;
 }
 
 .mx-auto {
@@ -741,13 +761,13 @@ video {
   height: 10vh;
 }
 
-.h-full {
-  height: 100%;
-}
-
 .h-fit {
   height: -moz-fit-content;
   height: fit-content;
+}
+
+.h-full {
+  height: 100%;
 }
 
 .max-h-\[100vh\] {
@@ -806,6 +826,10 @@ video {
   width: 1.125rem;
 }
 
+.w-\[50\%\] {
+  width: 50%;
+}
+
 .w-fit {
   width: -moz-fit-content;
   width: fit-content;
@@ -815,9 +839,13 @@ video {
   width: 100%;
 }
 
-.max-w-fit {
-  max-width: -moz-fit-content;
-  max-width: fit-content;
+.w-\[25\%\] {
+  width: 25%;
+}
+
+.min-w-fit {
+  min-width: -moz-fit-content;
+  min-width: fit-content;
 }
 
 .max-w-none {
@@ -851,11 +879,6 @@ video {
 
 .rotate-0 {
   --tw-rotate: 0deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.rotate-90 {
-  --tw-rotate: 90deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -983,13 +1006,13 @@ video {
   background-color: var(--very-dark-grey);
 }
 
+.bg-black\/20 {
+  background-color: rgb(0 0 0 / 0.2);
+}
+
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-}
-
-.bg-black\/20 {
-  background-color: rgb(0 0 0 / 0.2);
 }
 
 .object-cover {
@@ -1001,12 +1024,12 @@ video {
   padding: 0.75rem;
 }
 
-.p-8 {
-  padding: 2rem;
-}
-
 .p-4 {
   padding: 1rem;
+}
+
+.p-8 {
+  padding: 2rem;
 }
 
 .px-16 {
@@ -1039,6 +1062,11 @@ video {
   padding-bottom: 0.5rem;
 }
 
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -1047,11 +1075,6 @@ video {
 .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-}
-
-.py-3 {
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
 }
 
 .pl-6 {
@@ -1064,6 +1087,10 @@ video {
 
 .pr-6 {
   padding-right: 1.5rem;
+}
+
+.text-left {
+  text-align: left;
 }
 
 .text-center {
@@ -1080,6 +1107,10 @@ video {
 
 .text-\[var\(--medium-gray\)\] {
   color: var(--medium-gray);
+}
+
+.text-\[var\(--red\)\] {
+  color: var(--red);
 }
 
 .text-black {

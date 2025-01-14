@@ -8,14 +8,17 @@ interface CoreData {
     boards: Board[],
     current: string,
     viewTask: Task | null,
-    loading: boolean
+    loading: boolean,
+    editTask: Task | null,
+    createTask: boolean
 }
 const initData: CoreData = {
     boards: [],
     current: "",
-    viewTask: null,
-    loading: false
-
+    loading: false,
+    editTask: null,
+    createTask: false,
+    viewTask: null
 }
 const taskSlicer = createSlice({
     "name": "task",
@@ -26,22 +29,53 @@ const taskSlicer = createSlice({
         },
         toogleViewTask: (state: CoreData, action: PayloadAction<Task | null>) => {
             state.viewTask = action.payload
+            state.createTask = false
+            state.editTask = null
         },
         updateStatusTask: (state: CoreData, action: PayloadAction<{ task: Task, status: string }>) => {
-            const currentBoardIndex = state.boards.findIndex(board => board.name == state.current)
-            if (currentBoardIndex == -1) return
-            const currentBoard = state.boards[currentBoardIndex]
-            const currentColumnIndex = currentBoard.columns.findIndex(col => col.name == action.payload.task.status)
-            if (currentColumnIndex == -1) return
-            const currentColumn = currentBoard.columns[currentColumnIndex]
-            const removedTaskColumn = currentColumn.tasks.filter(ts => action.payload.task.title != ts.title)
-            const destinationColumnIndex = currentBoard.columns.findIndex(col => col.name == action.payload.status)
-            if (destinationColumnIndex == -1) return
-            currentColumn.tasks = removedTaskColumn
-            currentBoard.columns[destinationColumnIndex].tasks.push({ ...action.payload.task, status: action.payload.status })
-            console.log(1);
-            
+            const { boards, current } = state;
+            const currentBoard = boards.find(board => board.name === current);
+            if (!currentBoard) return;
+
+            const { task, status } = action.payload;
+            const currentColumn = currentBoard.columns.find(col => col.name === task.status);
+            const destinationColumn = currentBoard.columns.find(col => col.name === status);
+            if (!currentColumn || !destinationColumn) return;
+
+            currentColumn.tasks = currentColumn.tasks.filter(ts => ts.title !== task.title);
+
+            if (!destinationColumn.tasks.some(ts => ts.title === task.title)) {
+                destinationColumn.tasks.push({ ...task, status });
+            }
+        },
+        toggleStatusSubtask: (state: CoreData, action: PayloadAction<{ task: Task, value: string }>) => {
+            const { boards, current } = state;
+            const { task, value } = action.payload;
+            const subTask = boards
+                .find(board => board.name === current)
+                ?.columns.find(col => col.name === task.status)
+                ?.tasks.find(ts => ts.title === task.title)
+                ?.subtasks.find(sub => sub.title === value);
+
+            if (subTask && state.viewTask) {
+                subTask.isCompleted = !subTask.isCompleted;
+                state.viewTask.subtasks = task.subtasks.map(sub => {
+                    if (value == sub.title) return subTask
+                    return sub
+                })
+            }
+        },
+        editTask: (state: CoreData, action: PayloadAction<Task | null>) => {
+            state.editTask = action.payload
+            state.createTask = false
+            state.viewTask = null
+        },
+        createTask: (state: CoreData) => {
+            state.createTask = true
+            state.editTask = null
+            state.viewTask = null
         }
+
     },
     extraReducers: (builder) => {
         builder.addCase(fetchTasks.pending, (state: CoreData) => {
@@ -55,5 +89,5 @@ const taskSlicer = createSlice({
     }
 })
 
-export const { viewBoard, toogleViewTask, updateStatusTask } = taskSlicer.actions
+export const { viewBoard, toogleViewTask, updateStatusTask, toggleStatusSubtask, editTask, createTask } = taskSlicer.actions
 export default taskSlicer.reducer
