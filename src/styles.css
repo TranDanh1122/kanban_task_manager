@@ -73,6 +73,10 @@ html {
     outline: none;
 }
 
+#toogle_theme:hover {
+    background-color: var(--purple-hover);
+}
+
 #toogle_theme::-webkit-slider-thumb {
     appearance: none;
     -webkit-appearance: none;

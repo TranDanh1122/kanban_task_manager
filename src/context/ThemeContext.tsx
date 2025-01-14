@@ -9,10 +9,10 @@ const ThemeReducer = (theme: Theme, action: ThemeAction) => {
             return { ...theme, menu: action.payload }
     }
 }
-export const ThemeContext = React.createContext<{ theme: Theme, setTheme: React.Dispatch<ThemeAction> }>({ theme: { mode: "light", menu: false }, setTheme: () => { } })
+export const ThemeContext = React.createContext<{ theme: Theme, setTheme: React.Dispatch<ThemeAction> }>({ theme: { mode: "light", menu: true }, setTheme: () => { } })
 
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
-    const [theme, setTheme] = React.useReducer(ThemeReducer, { mode: "light", menu: false })
+    const [theme, setTheme] = React.useReducer(ThemeReducer, { mode: "light", menu: true })
     return (
         <ThemeContext.Provider value={{ theme, setTheme }}>
             {children}
