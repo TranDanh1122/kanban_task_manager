@@ -14,7 +14,7 @@ export default function Task({ task }: { task: Task }): React.JSX.Element {
         dispatch(toogleViewTask(task))
     }
     return (
-        <div onClick={handleViewTask} className={clsx("px-4 py-6 rounded-md shadow-md w-full cursor-pointer", {
+        <div onClick={handleViewTask} className={clsx("px-4 py-6 rounded-md shadow-md w-full h-full cursor-pointer", {
             "bg-white text-[var(--black)]": theme.mode == "light",
             "bg-[var(--dark-gray)] text-white": theme.mode == "dark"
         })}>

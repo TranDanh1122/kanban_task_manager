@@ -12,7 +12,7 @@ export function Board(): React.JSX.Element {
     const board = boards.find(board => current == board.name)
     if (!board) return <>This board is error...</>
     return (
-        <div className={clsx('h-full flex justify-center items-center pl-6', {
+        <div className={clsx('h-full flex justify-center items-center pl-6  overflow-y-scroll overflow-x-scroll', {
             "bg-[var(--light-grey)]": theme.mode == "light",
             "bg-[var(--very-dark-grey)]": theme.mode == "dark"
         })}>
@@ -25,8 +25,9 @@ export function Board(): React.JSX.Element {
                 </div>
             }
             {board.columns.length > 0 &&
-                < div className="flex justify-start h-full w-full gap-6">
+                < div className="flex justify-start min-h-max w-full gap-6 pt-[15vh] ">
                     {board.columns.map((column: Column, index: number) => <Column key={index} type="column" column={column} />)}
+                    <Column key={v4()} type="new" />
                 </div >
             }
         </div>

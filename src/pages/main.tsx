@@ -22,7 +22,7 @@ export default function Main() {
     return (
         <div className='container mb:max-w-none w-full h-full overflow-hidden relative flex '>
             <Sidebar />
-            <div className={clsx(' block transition-all ease-linear duration-500', {
+            <div className={clsx(' flex flex-col transition-all ease-linear duration-500', {
                 "w-full max-w-none": !theme.menu,
                 "w-4/5 max-w-4/5": theme.menu,
             })}>
