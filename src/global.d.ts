@@ -16,5 +16,9 @@ declare global {
         name: string,
         columns: Column
     }
+    interface Theme {
+        mode: string,
+        menu: boolean
+    }
 }
 export { }

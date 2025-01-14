@@ -2,6 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    .xl {
+        @apply font-bold text-[1.5rem]
+    }
+
+    .l {
+        @apply font-bold text-[1.125rem]
+    }
+
+    .m {
+        @apply font-bold text-[15px]
+    }
+
+    .s {
+        @apply font-bold text-[.75rem]
+    }
+
+    .body-l {
+        @apply text-[13px] leading-6 font-medium
+    }
+
+    .body-m {
+        @apply text-[.75rem] font-bold
+    }
+}
+
 body,
 html {
     width: 100%;
@@ -13,4 +39,54 @@ html {
     width: 100%;
     height: 100%;
     min-height: 100vh;
+}
+
+:root {
+    --black: #000112;
+    --very-dark-grey: #20212C;
+    --dark-gray: #2B2C37;
+    --line-dark: #3E3F4E;
+    --medium-gray: #828FA3;
+    --lines: #E4EBFA;
+    --light-grey: #F4F7FD;
+    --purple: #635FC7;
+    --purple-hover: #A8A4FF;
+    --red: #EA5555;
+    --red-hover: #FF9898
+}
+
+#toogle_theme {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 2.5rem;
+    height: 1.25rem;
+    background-color: var(--purple);
+    border-radius: 12px;
+    outline: none;
+    border: none;
+    padding: 2px;
+}
+
+#toogle_theme :focus {
+    border: none;
+    outline: none;
+}
+
+#toogle_theme::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+#toogle_theme::-moz-range-thumb {
+    appearance: none;
+    -moz-appearance: none;
+    width: 14px;
+    height: 14px;
+    background-color: white;
+    background-color: white;
 }
