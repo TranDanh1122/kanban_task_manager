@@ -12,6 +12,7 @@ import TaskInfo from '../components/TaskInfo'
 import { v4 } from 'uuid'
 import TaskForm from '../components/TaskForm'
 import Task from '../components/Task'
+import Modal from '../components/Modal'
 export default function Main() {
     const { theme } = React.useContext(ThemeContext)
     const dispatch: AppDispatch = useDispatch()
@@ -32,6 +33,7 @@ export default function Main() {
                 <Board />
                 {viewTask != null && <TaskInfo key={v4()} task={viewTask} />}
                 {taskForm  && <TaskForm key={v4()} task={taskForm instanceof Task ? taskForm : undefined} />}
+                <Modal/>
             </div>
         </div>
     )

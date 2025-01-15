@@ -4,9 +4,11 @@ import { ThemeContext } from "../context/ThemeContext";
 import { v4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, AppState } from "../redux/store";
-import { toggleStatusSubtask, toogleForm, toogleViewTask, updateStatusTask } from "../redux/TaskSlicer";
+import { deleteTask, toggleStatusSubtask, toogleForm, toogleViewTask, updateStatusTask } from "../redux/TaskSlicer";
+import { NotiContext } from "../context/NotificationContext";
 const TaskInfo = React.memo(({ task }: { task: Task }): React.JSX.Element => {
     const { theme } = React.useContext(ThemeContext)
+    const { pushNoti } = React.useContext(NotiContext)
     const { boards, current } = useSelector((state: AppState) => state.task)
     const dispatch: AppDispatch = useDispatch()
     const [action, togleAction] = React.useState<boolean>(false)
@@ -28,6 +30,23 @@ const TaskInfo = React.memo(({ task }: { task: Task }): React.JSX.Element => {
         document.addEventListener('click', handleOutsideClick)
         return () => document.removeEventListener('click', handleOutsideClick)
     }, [action])
+    const handleDetetask = () => {
+        pushNoti({
+            type: "SHOW", payload: {
+                title: "Delete this Task?",
+                content: `Are you sure you want to delete the ‘${task.title}’ task and its subtasks? This action cannot be reversed.`,
+                type: "warning",
+                isShow: true,
+                handleYes: () => {
+                    dispatch(deleteTask(task));
+                    pushNoti({ type: "HIDDEN" })
+                },
+                handleNo: () => {
+                    pushNoti({ type: "HIDDEN" })
+                }
+            }
+        })
+    }
     return (
         <>
             <div onClick={() => dispatch(toogleViewTask(null))} className="bg-black/20 fixed top-0 left-0 w-full h-full"></div>
@@ -48,13 +67,10 @@ const TaskInfo = React.memo(({ task }: { task: Task }): React.JSX.Element => {
                         "block": action
                     })}>
                         <button onClick={() => dispatch(toogleForm(task))} className="text-left text-[var(--medium-gray)]">Edit task</button>
-                        <button  className="text-left text-[var(--red)]">Delete Task</button>
+                        <button onClick={() => handleDetetask()} className="text-left text-[var(--red)]">Delete Task</button>
                     </div>
                 </div>
-                <p className=" body-l text-[var(--medium-gray)]">We know what we're planning to build for version one.
-                    Now we need to finalise the first pricing model we'll use.
-                    Keep iterating the subtasks until we have a coherent proposition.
-                </p>
+                <p className=" body-l text-[var(--medium-gray)]">{task.description}</p>
                 <div className="flex flex-col gap-2">
                     {
                         task.subtasks.map(subtask => <Subtask key={v4()} text={subtask.title} onChange={handleChangeSubtask} isComplete={subtask.isCompleted} />)

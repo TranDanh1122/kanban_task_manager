@@ -64,7 +64,7 @@ const taskSlicer = createSlice({
             }
         },
 
-        toogleForm: (state: CoreData, action: PayloadAction<Task | boolean>) => {            
+        toogleForm: (state: CoreData, action: PayloadAction<Task | boolean>) => {
             const task = action.payload
             state.taskForm = task
             state.viewTask = null
@@ -81,6 +81,17 @@ const taskSlicer = createSlice({
             if (!currentColumn) return;
             currentColumn.tasks = currentColumn.tasks.filter(ts => ts.title !== task.title);
             currentColumn.tasks = [...currentColumn.tasks, task]
+        },
+        deleteTask: (state: CoreData, action: PayloadAction<Task>) => {
+            const { boards, current } = state;
+            const currentBoard = boards.find(board => board.name === current);
+            if (!currentBoard) return;
+            const task = action.payload;
+            const currentColumn = currentBoard.columns.find(col => col.name === task.status);
+            if (!currentColumn) return;
+            currentColumn.tasks = currentColumn.tasks.filter(ts => ts.title !== task.title);
+            state.taskForm = false
+            state.viewTask = null
         }
 
     },
@@ -96,5 +107,5 @@ const taskSlicer = createSlice({
     }
 })
 
-export const { viewBoard, toogleViewTask, updateStatusTask, toggleStatusSubtask, toogleForm, updateOrCreateTask } = taskSlicer.actions
+export const { viewBoard, toogleViewTask, updateStatusTask, toggleStatusSubtask, toogleForm, updateOrCreateTask, deleteTask } = taskSlicer.actions
 export default taskSlicer.reducer
