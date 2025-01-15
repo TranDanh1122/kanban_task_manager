@@ -10,13 +10,13 @@ export function Board(): React.JSX.Element {
     const { theme } = React.useContext(ThemeContext)
     const { boards, current } = useSelector((state: AppState) => state.task)
     const board = boards.find(board => current == board.name)
-    if (!board) return <>This board is error...</>
+    if (!board) return <>Hmm, you deleted all board, next maybe delete your system32...</>
     return (
         <div className={clsx('h-full flex justify-center items-center pl-6  overflow-y-scroll overflow-x-scroll', {
             "bg-[var(--light-grey)]": theme.mode == "light",
             "bg-[var(--very-dark-grey)]": theme.mode == "dark"
         })}>
-            {board.columns.length <= 0 &&
+            {( !board.columns || board.columns.length <= 0  )&&
                 <div className='flex w-1/2 flex-col gap-8'>
                     <span className='l text-[var(--medium-gray)] text-center'>This board is empty. Create a new column to get started.</span>
                     <div className='w-fit mx-auto'>
@@ -24,10 +24,10 @@ export function Board(): React.JSX.Element {
                     </div>
                 </div>
             }
-            {board.columns.length > 0 &&
+            { board.columns  && board.columns.length > 0 &&
                 < div className="flex justify-start min-h-max w-full gap-6 pt-[15vh] ">
                     {board.columns.map((column: Column, index: number) => <Column key={index} type="column" column={column} />)}
-                    <Column key={v4()} type="new" />
+                    <Column key={v4()} type="new"  />
                 </div >
             }
         </div>

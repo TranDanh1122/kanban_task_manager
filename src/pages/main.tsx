@@ -13,10 +13,11 @@ import { v4 } from 'uuid'
 import TaskForm from '../components/TaskForm'
 import Task from '../components/Task'
 import Modal from '../components/Modal'
+import BoardForm from '../components/BoardForm'
 export default function Main() {
     const { theme } = React.useContext(ThemeContext)
     const dispatch: AppDispatch = useDispatch()
-    const { loading, viewTask, taskForm } = useSelector((state: AppState) => state.task)
+    const { loading, viewTask, taskForm, boardForm } = useSelector((state: AppState) => state.task)
     React.useEffect(() => {
         dispatch(fetchTasks())
     }, [])
@@ -33,6 +34,7 @@ export default function Main() {
                 <Board />
                 {viewTask != null && <TaskInfo key={v4()} task={viewTask} />}
                 {taskForm  && <TaskForm key={v4()} task={taskForm instanceof Task ? taskForm : undefined} />}
+                {boardForm && <BoardForm key={v4()} /> }
                 <Modal/>
             </div>
         </div>

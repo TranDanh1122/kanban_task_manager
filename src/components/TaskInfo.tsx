@@ -50,7 +50,7 @@ const TaskInfo = React.memo(({ task }: { task: Task }): React.JSX.Element => {
     return (
         <>
             <div onClick={() => dispatch(toogleViewTask(null))} className="bg-black/20 fixed top-0 left-0 w-full h-full"></div>
-            <div className={clsx(" w-1/3 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex flex-col gap-6  p-8", {
+            <div className={clsx(" w-1/3 tb:w-1/2 mb:w-3/4 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex flex-col gap-6  p-8", {
                 "text-white bg-[var(--dark-gray)]": theme.mode == "dark",
                 "text-[var(--black)] bg-white": theme.mode == "light"
             })}>
@@ -73,7 +73,7 @@ const TaskInfo = React.memo(({ task }: { task: Task }): React.JSX.Element => {
                 <p className=" body-l text-[var(--medium-gray)]">{task.description}</p>
                 <div className="flex flex-col gap-2">
                     {
-                        task.subtasks.map(subtask => <Subtask key={v4()} text={subtask.title} onChange={handleChangeSubtask} isComplete={subtask.isCompleted} />)
+                        task.subtasks?.map(subtask => <Subtask key={v4()} text={subtask.title} onChange={handleChangeSubtask} isComplete={subtask.isCompleted} />)
                     }
 
                 </div>
@@ -101,7 +101,7 @@ export function Select({ items, picked, onSelect }: { items: unknown[], picked: 
 
         })}>
             <span className="body-m text-[var(--medium-gray)]">Current Status</span>
-            <div className={clsx("w-full flex justify-between items-center px-3 py-2 border-solid border-[1px] rounded-md", {
+            <div className={clsx("w-full flex justify-between items-center px-3 py-2 min-h-10 border-solid border-[1px] rounded-md", {
                 "border-[var(--medium-gray)]": theme.mode == "light",
                 "border-white": theme.mode == "dark",
             })}>

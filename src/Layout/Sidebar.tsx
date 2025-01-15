@@ -1,9 +1,10 @@
 import React from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import clsx from "clsx";
-import { useSelector } from "react-redux";
-import { AppState } from "../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, AppState } from "../redux/store";
 import MenuItem from "../components/MenuItem";
+import { toogleBoardForm } from "../redux/TaskSlicer";
 const Sidebar = React.memo((): React.JSX.Element => {
     const { theme, setTheme } = React.useContext(ThemeContext)
     const [value, setValue] = React.useState<number>(0)
@@ -12,6 +13,7 @@ const Sidebar = React.memo((): React.JSX.Element => {
         setTheme({ type: "CHANGE_THEME", payload: value == "0" ? "light" : "dark" })
         setValue(value as unknown as number)
     }
+    const dispatch: AppDispatch = useDispatch()
     const { boards } = useSelector((state: AppState) => state.task)
 
     return (<>
@@ -21,7 +23,7 @@ const Sidebar = React.memo((): React.JSX.Element => {
                 WebkitMask: "url(./assets/icon-show-sidebar.svg) center / cover no-repeat",
             }}></i>
         </div>
-        <div className={clsx(" w-1/5 max-w-1/5 h-full max-h-[100vh] shadow shadow-[var(--lines)] flex flex-col  transition-all ease-linear duration-500", {
+        <div className={clsx(" w-1/5 tb:w-1/3 mb:w-2/3 max-w-1/5 tb:max-w-1/3 mb:max-w-2/3 h-full max-h-[100vh] shadow shadow-[var(--lines)] flex flex-col  transition-all ease-linear duration-500", {
             "translate-x-[-100%] absolute -z-10": !theme.menu,
             "translate-x-0 ": theme.menu,
             "bg-white": theme.mode == "light",
@@ -33,6 +35,7 @@ const Sidebar = React.memo((): React.JSX.Element => {
             <h2 className='uppercase s text-[var(--medium-gray)] pl-8'>All Boards ({boards.length})</h2>
             <div className='flex flex-col justify-start items-start w-5/6 mt-5'>
                 {boards.map((board: Board, index: number) => <MenuItem key={index} name={board.name} text={board.name} />)}
+                <span onClick={() => dispatch(toogleBoardForm(true))} className="pl-8 m text-[var(--purple)] cursor-pointer">+ Create New Board</span>
             </div>
 
             <div className={clsx('w-5/6 mx-auto py-4 px-16 flex items-center justify-center gap-4 mt-auto', {

@@ -38,7 +38,7 @@ const TaskForm = React.memo(({ task }: { task?: Task }): React.JSX.Element => {
                 if (sub.name == name) return { ...sub, title: value }
                 return sub
             })
-            setData({ ...data, data: { ...data.data, subtasks: newSubTaks } })
+            setData({ ...data, data: { ...data.data, status: task?.status ?? "", subtasks: newSubTaks } })
         } else {
             setData({ ...data, data: { ...data.data, [name]: value } })
         }
@@ -75,7 +75,7 @@ const TaskForm = React.memo(({ task }: { task?: Task }): React.JSX.Element => {
     }
     return (<>
         <div onClick={() => dispatch(toogleForm(false))} className="bg-black/20 fixed top-0 left-0 w-full h-full"></div>
-        <form className={clsx(" w-1/3 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex flex-col gap-2  p-8", {
+        <form className={clsx(" w-1/3 tb:w-1/2 mb:w-3/4 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex flex-col gap-2  p-8", {
             "text-white bg-[var(--dark-gray)]": theme.mode == "dark",
             "text-[var(--black)] bg-white": theme.mode == "light"
         })}>
@@ -90,14 +90,14 @@ const TaskForm = React.memo(({ task }: { task?: Task }): React.JSX.Element => {
                 {data.data.subtasks && data.data.subtasks.map(subtask => <Input onChange={handleInputChange} name={subtask.name ?? `subtask[${v4()}]`} value={subtask.title} error={(data.error?.subtasks?.length ?? 0) > 0 ? data.error?.subtasks?.find(sub => sub.name == subtask.name)?.title ?? "" : ""} placeholder="e.g. Make coffee" type="input" onDelete={deleteSubtask} />)}
                 <Button clickEvent={() => addSubTask(`subtask[${v4()}]`)} text="+ Add New Subtask" width="100%" />
             </fieldset>
-            {board && board.columns && <Select onSelect={handleSelectInput} picked={data.data.status ?? board.columns[board.columns.length - 1].name ?? ''} items={board.columns.map(col => col.name)} />}
+            {board && board.columns && <Select onSelect={handleSelectInput} picked={data.data.status ??  " "} items={board.columns.map(col => col.name)} />}
             <Button clickEvent={submit} text={task ? "Save change" : "Create task"} width="100%" />
 
         </form>
     </>)
 })
 export default TaskForm
-export function Input({ label, name, value, placeholder, type, onDelete, onChange, error }: { label?: string, name: string, value?: string, placeholder: string, type: string, onDelete?: (value: string) => void, onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => void, error: string }): React.JSX.Element {
+export function Input({ label, name, value, placeholder, type, onDelete, onChange, error }: { label?: string, name: string, value?: string, placeholder: string, type: string, onDelete?: (value: string) => void, onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string, hasColor?: boolean) => void, error: string }): React.JSX.Element {
     const { theme } = React.useContext(ThemeContext)
     return (<>
         <fieldset className="flex flex-col w-full gap-2">

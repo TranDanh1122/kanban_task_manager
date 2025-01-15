@@ -11,13 +11,16 @@ declare global {
         [key: string]: any
     }
     interface Column {
+        id?: string,
         name: string,
-        color: string,
-        tasks: Task[]
+        color?: string,
+        tasks: Task[],
+        [key: string]: any
     }
     interface Board {
         name: string,
-        columns: Column[]
+        columns: Column[],
+        [key: string]: any
     }
     interface Theme {
         mode: string,

@@ -11,13 +11,15 @@ interface CoreData {
     viewTask: Task | null,
     loading: boolean,
     taskForm: Task | boolean,
+    boardForm: Board | boolean
 }
 const initData: CoreData = {
     boards: [],
     current: "",
     loading: false,
     taskForm: false,
-    viewTask: null
+    viewTask: null,
+    boardForm: false
 }
 const taskSlicer = createSlice({
     "name": "task",
@@ -69,6 +71,13 @@ const taskSlicer = createSlice({
             state.taskForm = task
             state.viewTask = null
         },
+        toogleBoardForm: (state: CoreData, action: PayloadAction<Board | boolean>) => {
+            console.log(action.payload);
+
+            state.boardForm = action.payload
+            state.viewTask = null
+            state.taskForm = false
+        },
         updateOrCreateTask: (state: CoreData, action: PayloadAction<Task>) => {
             const { boards, current } = state;
 
@@ -92,6 +101,21 @@ const taskSlicer = createSlice({
             currentColumn.tasks = currentColumn.tasks.filter(ts => ts.title !== task.title);
             state.taskForm = false
             state.viewTask = null
+        },
+        updateOrCreateBoard: (state: CoreData, action: PayloadAction<Board>) => {
+            const { boards } = state;
+            const board = action.payload
+            const boardIndex = boards.findIndex(b => board.name == b.name);
+            if (boardIndex == -1) {
+                state.boards.push(board)
+            } else {
+                state.boards[boardIndex] = board
+            }
+        },
+        deleteBoard: (state: CoreData, action: PayloadAction<Board>) => {
+            state.boards = state.boards.filter(board => board.name !== action.payload.name);
+            if (state.boards.length > 0)
+                state.current = state.boards[0].name
         }
 
     },
@@ -107,5 +131,5 @@ const taskSlicer = createSlice({
     }
 })
 
-export const { viewBoard, toogleViewTask, updateStatusTask, toggleStatusSubtask, toogleForm, updateOrCreateTask, deleteTask } = taskSlicer.actions
+export const { viewBoard, toogleViewTask, updateStatusTask, toggleStatusSubtask, toogleForm, updateOrCreateTask, deleteTask, toogleBoardForm, updateOrCreateBoard, deleteBoard } = taskSlicer.actions
 export default taskSlicer.reducer
