@@ -4,14 +4,6 @@ import Task from "./Task";
 import { ThemeContext } from "../context/ThemeContext";
 export default function Column({ type, column }: { type: string, column?: Column }): React.JSX.Element {
     const { theme } = React.useContext(ThemeContext)
-    // if (!column) return <>
-    //     <div className={clsx("w-1/4 h-full py-6 flex items-center justify-center text-[var(--medium-gray)] xl", {
-    //         "bg-[#E9EFFA]": theme.mode == "light",
-    //         "bg-[var(--dark-gray)]": theme.mode == "dark",
-    //     })}>
-    //         + New Column
-    //     </div>
-    // </>
 
     return (<>
         <div className="w-1/4 h-full py-6" >
@@ -20,20 +12,19 @@ export default function Column({ type, column }: { type: string, column?: Column
                 {column && <h2 className="s text-[var(--medium-gray)] uppercase"> {column.name}({column.tasks.length})</h2>}
             </div>
 
-            <div className={clsx("flex flex-col w-full gap-5 h-full min-h-0", {
+            <div className={clsx("flex flex-col w-full gap-5 h-full min-h-[85vh] ", {
                 "items-start gap-5": type != "new",
                 "items-center justify-center": type == "new",
                 "bg-[#E9EFFA]": theme.mode == "light" && type == "new",
                 "bg-[var(--dark-gray)]": theme.mode == "dark" && type == "new",
-            })}
-                style={{ height: `calc(100% +  ${((column?.tasks.length ?? 1) - 1) * 100}px)` }}>
+            })}>
                 {column &&
                     column.tasks.length >= 0 &&
                     <>
                         {column.tasks.map((task: Task, index: number) => <Task key={index} task={task} />)}
                     </>
                 }
-                {!column && <span className="cursor-pointer h-[100px] text-[var(--medium-gray)] xl">+ New Column</span>}
+                {!column && <div className="cursor-pointer text-[var(--medium-gray)] xl">+ New Column</div>}
             </div>
         </div >
     </>)

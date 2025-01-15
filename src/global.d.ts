@@ -1,12 +1,14 @@
 declare global {
     interface Task {
-        title: string;
-        description: string;
-        status: string;
+        title: string,
+        description: string,
+        status: string,
         subtasks: {
-            title: string;
-            isCompleted: boolean;
+            name?: string,
+            title: string,
+            isCompleted: boolean
         }[];
+        [key: string]: any
     }
     interface Column {
         name: string,

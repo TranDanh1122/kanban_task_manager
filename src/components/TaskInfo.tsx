@@ -4,7 +4,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import { v4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, AppState } from "../redux/store";
-import { editTask, toggleStatusSubtask, toogleViewTask, updateStatusTask } from "../redux/TaskSlicer";
+import { toggleStatusSubtask, toogleForm, toogleViewTask, updateStatusTask } from "../redux/TaskSlicer";
 const TaskInfo = React.memo(({ task }: { task: Task }): React.JSX.Element => {
     const { theme } = React.useContext(ThemeContext)
     const { boards, current } = useSelector((state: AppState) => state.task)
@@ -47,7 +47,7 @@ const TaskInfo = React.memo(({ task }: { task: Task }): React.JSX.Element => {
                         "hidden": !action,
                         "block": action
                     })}>
-                        <button onClick={() => dispatch(editTask(task))} className="text-left text-[var(--medium-gray)]">Edit task</button>
+                        <button onClick={() => dispatch(toogleForm(task))} className="text-left text-[var(--medium-gray)]">Edit task</button>
                         <button  className="text-left text-[var(--red)]">Delete Task</button>
                     </div>
                 </div>
@@ -86,7 +86,7 @@ export function Select({ items, picked, onSelect }: { items: unknown[], picked: 
         })}>
             <span className="body-m text-[var(--medium-gray)]">Current Status</span>
             <div className={clsx("w-full flex justify-between items-center px-3 py-2 border-solid border-[1px] rounded-md", {
-                "border-black": theme.mode == "light",
+                "border-[var(--medium-gray)]": theme.mode == "light",
                 "border-white": theme.mode == "dark",
             })}>
                 <span>{picked}</span>
@@ -102,7 +102,7 @@ export function Select({ items, picked, onSelect }: { items: unknown[], picked: 
 
             {
                 items
-                && <div className={clsx("absolute p-4 w-full h-fit flex flex-col top-[100%]", {
+                && <div className={clsx("absolute p-4 w-full h-fit flex flex-col top-[100%] shadow-md", {
                     "bg-white text-black ": theme.mode == "light",
                     "bg-[var( --dark-gray)] text-white": theme.mode == "dark",
                     "hidden": !show,

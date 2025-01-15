@@ -8,7 +8,7 @@ export default function Task({ task }: { task: Task }): React.JSX.Element {
     const { theme } = React.useContext(ThemeContext)
     const dispatch: AppDispatch = useDispatch()
     const { subTaskDone, subtasks } = React.useCallback((): { subTaskDone: number, subtasks: number } => {
-        return { subTaskDone: task.subtasks.filter(subtask => subtask.isCompleted).length, subtasks: task.subtasks.length }
+        return { subTaskDone: task.subtasks?.filter(subtask => subtask.isCompleted).length ?? 0, subtasks: task.subtasks?.length ?? 0 }
     }, [task])()
     const handleViewTask = () => {
         dispatch(toogleViewTask(task))

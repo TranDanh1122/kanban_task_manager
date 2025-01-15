@@ -11,14 +11,16 @@ import { Board } from '../components/Board'
 import TaskInfo from '../components/TaskInfo'
 import { v4 } from 'uuid'
 import TaskForm from '../components/TaskForm'
+import Task from '../components/Task'
 export default function Main() {
     const { theme } = React.useContext(ThemeContext)
     const dispatch: AppDispatch = useDispatch()
-    const { loading, viewTask, editTask, createTask } = useSelector((state: AppState) => state.task)
+    const { loading, viewTask, taskForm } = useSelector((state: AppState) => state.task)
     React.useEffect(() => {
         dispatch(fetchTasks())
     }, [])
     if (loading) return <>Loading...</>
+
     return (
         <div className='container mb:max-w-none w-full h-full overflow-hidden relative flex '>
             <Sidebar />
@@ -29,7 +31,7 @@ export default function Main() {
                 <Header />
                 <Board />
                 {viewTask != null && <TaskInfo key={v4()} task={viewTask} />}
-                {(editTask != null || createTask) && <TaskForm key={v4()}  />}
+                {taskForm  && <TaskForm key={v4()} task={taskForm instanceof Task ? taskForm : undefined} />}
             </div>
         </div>
     )

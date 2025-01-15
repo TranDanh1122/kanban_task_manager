@@ -1,5 +1,6 @@
 import { TaskAPI } from "../api/TaskAPI";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
+import Task from "../components/Task";
 export const fetchTasks = createAsyncThunk('task/fetchData', async () => {
     const response = await TaskAPI.fetchData()
     return response.data
@@ -9,15 +10,13 @@ interface CoreData {
     current: string,
     viewTask: Task | null,
     loading: boolean,
-    editTask: Task | null,
-    createTask: boolean
+    taskForm: Task | boolean,
 }
 const initData: CoreData = {
     boards: [],
     current: "",
     loading: false,
-    editTask: null,
-    createTask: false,
+    taskForm: false,
     viewTask: null
 }
 const taskSlicer = createSlice({
@@ -29,8 +28,7 @@ const taskSlicer = createSlice({
         },
         toogleViewTask: (state: CoreData, action: PayloadAction<Task | null>) => {
             state.viewTask = action.payload
-            state.createTask = false
-            state.editTask = null
+            state.taskForm = false
         },
         updateStatusTask: (state: CoreData, action: PayloadAction<{ task: Task, status: string }>) => {
             const { boards, current } = state;
@@ -65,15 +63,24 @@ const taskSlicer = createSlice({
                 })
             }
         },
-        editTask: (state: CoreData, action: PayloadAction<Task | null>) => {
-            state.editTask = action.payload
-            state.createTask = false
+
+        toogleForm: (state: CoreData, action: PayloadAction<Task | boolean>) => {            
+            const task = action.payload
+            state.taskForm = task
             state.viewTask = null
         },
-        createTask: (state: CoreData) => {
-            state.createTask = true
-            state.editTask = null
-            state.viewTask = null
+        updateOrCreateTask: (state: CoreData, action: PayloadAction<Task>) => {
+            const { boards, current } = state;
+
+            const currentBoard = boards.find(board => board.name === current);
+            if (!currentBoard) return;
+
+            const task = action.payload;
+
+            const currentColumn = currentBoard.columns.find(col => col.name === task.status);
+            if (!currentColumn) return;
+            currentColumn.tasks = currentColumn.tasks.filter(ts => ts.title !== task.title);
+            currentColumn.tasks = [...currentColumn.tasks, task]
         }
 
     },
@@ -89,5 +96,5 @@ const taskSlicer = createSlice({
     }
 })
 
-export const { viewBoard, toogleViewTask, updateStatusTask, toggleStatusSubtask, editTask, createTask } = taskSlicer.actions
+export const { viewBoard, toogleViewTask, updateStatusTask, toggleStatusSubtask, toogleForm, updateOrCreateTask } = taskSlicer.actions
 export default taskSlicer.reducer
