@@ -17,14 +17,22 @@ const Sidebar = React.memo((): React.JSX.Element => {
     const { boards } = useSelector((state: AppState) => state.task)
 
     return (<>
-        <div onClick={() => setTheme({ type: "TOOGLE_MENU", payload: true })} className="absolute w-14 h-12 rounded-r-full bg-[var(--purple)] hover:bg-[var(--purple-hover)] flex items-center justify-center bottom-0 translate-y-[-2rem] left-0">
+        <div  onClick={() => setTheme({ type: "TOOGLE_MENU", payload: false })} className={clsx("hidden fixed top-0 left-0 w-full h-full bg-black/20", {
+            "hidden": !theme.menu,
+            "mb:block": theme.menu
+        })}></div>
+        <div onClick={() => setTheme({ type: "TOOGLE_MENU", payload: true })} className="absolute mb:hidden w-14 h-12 rounded-r-full bg-[var(--purple)] hover:bg-[var(--purple-hover)] flex items-center justify-center bottom-0 translate-y-[-2rem] left-0">
             <i className="w-4 h-3 block bg-white" style={{
                 mask: "url(./assets/icon-show-sidebar.svg) center / cover no-repeat",
                 WebkitMask: "url(./assets/icon-show-sidebar.svg) center / cover no-repeat",
             }}></i>
         </div>
-        <div className={clsx(" w-1/5 tb:w-1/3 mb:w-2/3 max-w-1/5 tb:max-w-1/3 mb:max-w-2/3 h-full max-h-[100vh] shadow shadow-[var(--lines)] flex flex-col  transition-all ease-linear duration-500", {
-            "translate-x-[-100%] absolute -z-10": !theme.menu,
+        <div className={clsx(` w-1/5 tb:w-1/3 mb:w-2/3 max-w-1/5 
+        tb:max-w-1/3 mb:max-w-2/3 h-full 
+        max-h-[100vh] shadow shadow-[var(--lines)] 
+        flex flex-col  transition-all 
+        ease-linear duration-500 mb:absolute mb:top-[50%] mb:h-max mb:left-[50%] mb:translate-x-[-50%] mb:translate-y-[-50%]`, {
+            "translate-x-[-100%] mb:translate-x-0  absolute -z-10": !theme.menu,
             "translate-x-0 ": theme.menu,
             "bg-white": theme.mode == "light",
             "bg-[var(--dark-gray)]": theme.mode == "dark"
@@ -38,7 +46,7 @@ const Sidebar = React.memo((): React.JSX.Element => {
                 <span onClick={() => dispatch(toogleBoardForm(true))} className="pl-8 m text-[var(--purple)] cursor-pointer">+ Create New Board</span>
             </div>
 
-            <div className={clsx('w-5/6 mx-auto py-4 px-16 flex items-center justify-center gap-4 mt-auto', {
+            <div className={clsx('w-5/6 mx-auto py-4 px-16 mb:px-2 flex items-center justify-center gap-4 mt-auto mb:mt-2 mb:pb-3', {
                 "bg-[var(--light-grey)]": theme.mode == "light",
                 "bg-[var(--very-dark-grey)]": theme.mode == "dark"
             })}>

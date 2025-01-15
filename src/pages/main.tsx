@@ -28,7 +28,7 @@ export default function Main() {
             <Sidebar />
             <div className={clsx(' flex flex-col transition-all ease-linear duration-500', {
                 "w-full max-w-none": !theme.menu,
-                "w-4/5 max-w-4/5": theme.menu,
+                "w-4/5 max-w-4/5 mb:w-full mb:max-w-full": theme.menu,
             })}>
                 <Header />
                 <Board />

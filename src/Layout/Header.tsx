@@ -8,7 +8,7 @@ import { AppDispatch, AppState } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { NotiContext } from "../context/NotificationContext";
 const Header = React.memo((): React.JSX.Element => {
-    const { theme } = React.useContext(ThemeContext)
+    const { theme, setTheme } = React.useContext(ThemeContext)
     const { boards, current } = useSelector((state: AppState) => state.task)
     const board = boards.find(board => current == board.name)
     const dispatch: AppDispatch = useDispatch()
@@ -32,30 +32,39 @@ const Header = React.memo((): React.JSX.Element => {
             }
         })
     }
-        React.useEffect(() => {
-            const handleOutsideClick = (event: MouseEvent) => {
-                if (ref.current && !ref.current.contains(event.target as Node)) {
-                    if (!action) return
-                    setAction(!action)
-                }
+    React.useEffect(() => {
+        const handleOutsideClick = (event: MouseEvent) => {
+            if (ref.current && !ref.current.contains(event.target as Node)) {
+                if (!action) return
+                setAction(!action)
             }
-            document.addEventListener('click', handleOutsideClick)
-            return () => document.removeEventListener('click', handleOutsideClick)
-        }, [action])
+        }
+        document.addEventListener('click', handleOutsideClick)
+        return () => document.removeEventListener('click', handleOutsideClick)
+    }, [action])
+    const toogleMenu = () => {
+        console.log(1);
+        if (window.innerWidth > 767) return
+        
+        setTheme({ type: "TOOGLE_MENU", payload: !theme.menu })
+    }
     return (<>
-        <header className={clsx('flex justify-start gap-4 items-center h-[10vh] px-8  shadow-md', {
+        <header className={clsx('flex justify-start gap-4 items-center h-[10vh] px-8 mb:px-1 shadow-md', {
             "bg-white": theme.mode == "light",
             "bg-[var(--dark-gray)] text-white": theme.mode == "dark"
         })}>
-            <div className={clsx('border-solid border-r-[1px] border-[var(--lines)] pr-6 h-full flex items-center', {
-                "hidden": theme.menu,
-                "block": !theme.menu
-            })}>
-                {theme.mode == "light" && <img src="./assets/logo-dark.svg" alt="logo" className='w-40 h-7 object-cover' />}
-                {theme.mode == "dark" && <img src="./assets/logo-light.svg" alt="logo" className='w-40 h-7 object-cover' />}
+            <div onClick={toogleMenu}
+                className={clsx('border-solid border-r-[1px] border-[var(--lines)] pr-6 mb:pr-1 h-full flex items-center', {
+                    "hidden mb:flex": theme.menu,
+                    "flex": !theme.menu
+                })}>
+                {theme.mode == "light" && (window.innerWidth > 767) && <img src="./assets/logo-dark.svg" alt="logo" className='w-40 h-7 object-cover' />}
+                {theme.mode == "dark" && (window.innerWidth > 767) && <img src="./assets/logo-light.svg" alt="logo" className='w-40 h-7 object-cover' />}
+                {(window.innerWidth < 767) && <img src="./assets/logo-mobile.svg" alt="logo" className='w-6 h-6 object-cover' />}
+
             </div>
             <h1 className='xl text-[var(--black)] mr-auto'>Platform Launch</h1>
-            <Button clickEvent={() => dispatch(toogleForm(true))} key={v4()} text='+ Add New Task' />
+            <Button clickEvent={() => dispatch(toogleForm(true))} key={v4()} text={window.innerWidth > 767 ? '+ Add New Task' : "+"} />
             <div className="relative w-fit h-fit">
                 <i ref={ref} onClick={() => setAction(!action)} className='w-1 h-5 block bg-[--medium-gray]' style={{ mask: "url(./assets/icon-vertical-ellipsis.svg) center / cover no-repeat", WebkitMask: "url(./assets/icon-vertical-ellipsis.svg) center / cover no-repeat" }}></i>
 

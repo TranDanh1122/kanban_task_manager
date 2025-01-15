@@ -25,7 +25,7 @@ export function Board(): React.JSX.Element {
                 </div>
             }
             { board.columns  && board.columns.length > 0 &&
-                < div className="flex justify-start min-h-max w-full gap-6 pt-[15vh] ">
+                < div className="flex justify-start min-h-max w-full gap-6 pt-[15vh] mb:pt-[30vh]">
                     {board.columns.map((column: Column, index: number) => <Column key={index} type="column" column={column} />)}
                     <Column key={v4()} type="new"  />
                 </div >
