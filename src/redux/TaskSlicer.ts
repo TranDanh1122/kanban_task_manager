@@ -1,6 +1,5 @@
 import { TaskAPI } from "../api/TaskAPI";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
-import Task from "../components/Task";
 export const fetchTasks = createAsyncThunk('task/fetchData', async () => {
     const response = await TaskAPI.fetchData()
     return response.data
